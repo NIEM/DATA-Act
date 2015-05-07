@@ -1,0 +1,4 @@
+2015-05-06
+	* Initial Release - Extension Schema leverages:
+		- http://tfm.fiscal.treasury.gov/v1/supplements/ussgl/ussgl_part_2/sec1/sec1_chrtacct_2015.pdf
+		- http://tfm.fiscal.treasury.gov/v1/supplements/ussgl/ussgl_part_2/sec4/sec4_combined_2015.pdf

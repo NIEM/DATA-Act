@@ -1,0 +1,1194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://release.niem.gov/niem/finance/3.0/" version="1"
+		   xmlns:ct="http://release.niem.gov/niem/conformanceTargets/3.0/"
+		   xmlns:term="http://release.niem.gov/niem/localTerminology/3.0/" 
+		   xmlns:structures="http://release.niem.gov/niem/structures/3.0/" 
+		   xmlns:nc="http://release.niem.gov/niem/niem-core/3.0/" 
+		   xmlns:niem-xs="http://release.niem.gov/niem/proxy/xsd/3.0/"
+		   xmlns:fin="http://release.niem.gov/niem/finance/3.0/"
+		   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		   ct:conformanceTargets="http://reference.niem.gov/niem/specification/naming-and-design-rules/3.0/#ExtensionSchemaDocument">
+	<xs:annotation>
+		<xs:documentation>Defines NIEM adapter types for external financial components defined by the Department of the Treasury and Office of Management and Budget in support of the DATA Act.  It references local copies of unmodified schemas from external standards in local directory tree fragments that mirror the directory structures of the canonical schema sources on the world wide web.</xs:documentation>
+		<xs:appinfo>
+			<term:LocalTerm term="BEA" definition="Budget Enforcement Act"/>
+			<term:LocalTerm term="OMB" definition="Office of Management and Budget"/>
+			<term:LocalTerm term="TAFS" definition="Treasury Appropriation Fund Symbol"/>
+			<term:LocalTerm term="TAS" definition="Treasury Account Symbol"/>						
+			<term:LocalTerm term="USSGL" definition="United States Standard General Ledger"/>
+		</xs:appinfo>
+	</xs:annotation>
+	
+	<xs:import schemaLocation="../niem/niem-core/3.0/niem-core.xsd" namespace="http://release.niem.gov/niem/niem-core/3.0/"/>
+	<xs:import schemaLocation="../niem/structures/3.0/structures.xsd" namespace="http://release.niem.gov/niem/structures/3.0/"/>
+	<xs:import schemaLocation="../niem/proxy/xsd/3.0/xs.xsd" namespace="http://release.niem.gov/niem/proxy/xsd/3.0/"/>
+	
+	<xs:simpleType name="AnticipatedCodeSimpleType">
+		<xs:annotation>
+			<xs:documentation>A data type that indicates that the transaction is expected or anticipated to occur in the current fiscal year. Reference: USSGL</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="N">
+				<xs:annotation>
+					<xs:documentation>No</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Y">
+				<xs:annotation>
+					<xs:documentation>Yes</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="AnticipatedCodeType">
+		<xs:annotation>
+			<xs:documentation>A data type that indicates that the transaction is expected or anticipated to occur in the current fiscal year. Reference: USSGL</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="fin:AnticipatedCodeSimpleType">
+				<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="ApportionmentCategoryCodeSimpleType">
+		<xs:annotation>
+			<xs:documentation>A data type for representing apportionment categories. Reference: OMB Circ. No. A-11</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="A">
+				<xs:annotation>
+					<xs:documentation>Category A - Quarterly Apportionments</xs:documentation>
+				</xs:annotation>	 				
+			</xs:enumeration>
+			<xs:enumeration value="B">
+				<xs:annotation>
+					<xs:documentation>Category B - Apportionments other than quarterly</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="E">
+				<xs:annotation>
+					<xs:documentation>Exempt from Apportionment</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ApportionmentCategoryCodeType">
+		<xs:annotation>
+			<xs:documentation>An data type representing apportionments by quarter, or by other specified time periods. Reference: OMB Circ. No. A-11</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="fin:ApportionmentCategoryCodeSimpleType">
+				<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="AuthorityCodeSimpleType">
+		<xs:annotation>
+			<xs:documentation>A data type that distinguishes among the types of budgetary resources, where it is not possible to do so by the USSGL Account Number Code. Reference: OMB Circ. No. A-11, TFM 2-4200</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="B">
+				<xs:annotation>
+					<xs:documentation>Borrowing Authority</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C">
+				<xs:annotation>
+					<xs:documentation>Contract Authority</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="D">
+				<xs:annotation>
+					<xs:documentation>Advance Appropriation</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="E">
+				<xs:annotation>
+					<xs:documentation>Appropriation (Advance Funding) available in Prior Year</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="F">
+				<xs:annotation>
+					<xs:documentation>Appropriation (Advance Funding) available from Subsequent Year</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="P">
+				<xs:annotation>
+					<xs:documentation>Appropriation (excluding Advance Funding)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="R">
+				<xs:annotation>
+					<xs:documentation>Reappropriation</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="S">
+				<xs:annotation>
+					<xs:documentation>Spending Authority from Offsetting Collections</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>			   
+	</xs:simpleType>
+	<xs:complexType name="AuthorityCodeType">
+		<xs:annotation>
+			<xs:documentation>A data type that distinguishes among the types of budgetary resources, where it is not possible to do so by the USSGL Account Number Code. Reference: OMB Circ. No. A-11, TFM 2-4200</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="fin:AuthorityCodeSimpleType">
+				<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="AvailabilityTimeSimpleCodeType">
+		<xs:annotation>
+			<xs:documentation>A data type that indicates whether a budgetary resource is available for new obligations in the current period, or in a subsequent period within the current fiscal year or after being reapportioned in a future fiscal year. Reference: OMB Circ. No. A-11</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="A">
+				<xs:annotation>
+					<xs:documentation>Available in current period</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="S">
+				<xs:annotation>
+					<xs:documentation>Available in subsequent period</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="AvailabilityTimeCodeType">
+		<xs:annotation>
+			<xs:documentation>A data type that indicates whether a budgetary resource is available for new obligations in the current period, or in a subsequent period within the current fiscal year or after being reapportioned in a future fiscal year. Reference: OMB Circ. No. A-11</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="fin:AvailabilityTimeSimpleCodeType">
+				<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+		<xs:simpleType name="BEACategorySimpleCodeType">
+		<xs:annotation>
+			<xs:documentation>A data type that indicates whether the Budget Enforcement Act (BEA) category is mandatory or discretionary. Reference: OMB Circ. No. A-11</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="D">
+				<xs:annotation>
+					<xs:documentation>Discretionary</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="M">
+				<xs:annotation>
+					<xs:documentation>Mandatory</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="BEACategoryCodeType">
+		<xs:annotation>
+			<xs:documentation>A data type that indicates whether the Budget Enforcement Act (BEA) category is mandatory or discretionary. Reference: OMB Circ. No. A-11</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="fin:BEACategorySimpleCodeType">
+				<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="BeginEndSimpleCodeType">
+		<xs:annotation>
+			<xs:documentation>A data type that indicates whether the balance or an USSGL account/attribute combination is at the start of the fiscal year or at the end of a period. Reference: TFM</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="B">
+				<xs:annotation>
+					<xs:documentation>Beginning Balance</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="E">
+				<xs:annotation>
+					<xs:documentation>Ending Balance</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="BeginEndCodeType">
+		<xs:annotation>
+			<xs:documentation>A data type that indicates whether the balance or an USSGL account/attribute combination is at the start of the fiscal year or at the end of a period. Reference: TFM</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="fin:BeginEndSimpleCodeType">
+				<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	
+	<xs:simpleType name="BorrowingSourceCodeSimpleCodeType">
+        <xs:annotation>
+        	<xs:documentation>A data type that indicates whether borrowing took place from the public, Treasury, or a Federal financing bank. Reference: TFM, OMB Circ. No. A-11</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+			<xs:enumeration value="F">
+				<xs:annotation>
+					<xs:documentation>Federal Financing Bank</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="P">
+				<xs:annotation>
+					<xs:documentation>Public</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="T">
+				<xs:annotation>
+					<xs:documentation>Treasury</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="BorrowingSouceCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that indicates whether borrowing took place from the public, Treasury, or a Federal financing bank. Reference: TFM, OMB Circ. No. A-11</xs:documentation>
+    	</xs:annotation>
+    	<xs:simpleContent>
+    		<xs:extension base="fin:BorrowingSourceCodeSimpleCodeType">
+    			<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+    		</xs:extension>
+    	</xs:simpleContent>
+    </xs:complexType>
+	<xs:simpleType name="BudgetaryImpactSimpleCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that indicates whether financing resources and non-exchange revenue have an impact on the budget. Reference: TFM</xs:documentation>
+    	</xs:annotation>
+        <xs:restriction base="xs:token">
+			<xs:enumeration value="D">
+				<xs:annotation>
+					<xs:documentation>Budgetary Impact</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="E">
+				<xs:annotation>
+					<xs:documentation>Non-Budgetary Impact</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="BudgetaryImpactCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that indicates whether financing resources and non-exchange revenue have an impact on the budget. Reference: TFM</xs:documentation>
+    	</xs:annotation>
+    	<xs:simpleContent>
+    		<xs:extension base="fin:BudgetaryImpactSimpleCodeType">
+    			<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+    		</xs:extension>
+    	</xs:simpleContent>
+    </xs:complexType>
+    
+    <xs:simpleType name="BudgetaryProprietaryCodeSimpleCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that indicates if a USSGL account is reported on a budgetary, proprietary statement or both.  Reference: OMB Circ. No. A-11, OMB Circ. No. A-136, TFM</xs:documentation>
+    	</xs:annotation>
+        <xs:restriction base="xs:token">
+			<xs:enumeration value="A">
+				<xs:annotation>
+					<xs:documentation>Both Budgetary and Proprietary</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B">
+				<xs:annotation>
+					<xs:documentation>Budgetary</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="P">
+				<xs:annotation>
+					<xs:documentation>Proprietary</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="BudgetaryProprietaryCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that indicates if a USSGL account is reported on a budgetary, proprietary statement or both.  Reference: OMB Circ. No. A-11, OMB Circ. No. A-136, TFM</xs:documentation>
+    	</xs:annotation>
+    	<xs:simpleContent>
+    		<xs:extension base="fin:BudgetaryProprietaryCodeSimpleCodeType">
+    			<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+    		</xs:extension>
+    	</xs:simpleContent>
+    </xs:complexType>
+    <xs:simpleType name="CustodialNoncustodialSimpleCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that indicates whether reported amounts are custodial or noncustodial.  Reference: SFFAS #7, OMB Circ. No. A-136</xs:documentation>
+    	</xs:annotation>
+        <xs:restriction base="xs:token">
+			<xs:enumeration value="A">
+				<xs:annotation>
+					<xs:documentation>Non-custodial</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="S">
+				<xs:annotation>
+					<xs:documentation>Custodial</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	 <xs:complexType name="BulkFileAttributesType">
+    	<xs:annotation>
+    		<xs:documentation>A data type representing detailed below the 6-digit USSGL account. Agencies capture this information at the transaction level by recording transactions using USSGL 6-digit accounts plus attributes.</xs:documentation>
+    	</xs:annotation>
+    	<xs:complexContent>
+    		<xs:extension base="structures:ObjectType">
+    			<xs:sequence>
+    				<xs:element ref="fin:BeginEndCode" minOccurs="0" maxOccurs="unbounded"/>
+    				<xs:element ref="fin:DebitCreditCode" minOccurs="0" maxOccurs="unbounded"/>
+    				<xs:element ref="fin:AuthorityCode" minOccurs="0" maxOccurs="unbounded"/>
+    				<xs:element ref="fin:ApportionmentCategoryCode" minOccurs="0" maxOccurs="unbounded"/>
+    				<xs:element ref="fin:ApportionmentCategoryBProgramValue" minOccurs="0" maxOccurs="unbounded"/>
+    				<xs:element ref="fin:AvailabilityTimeCode" minOccurs="0" maxOccurs="unbounded"/>
+    				<xs:element ref="fin:BEACategoryCode" minOccurs="0" maxOccurs="unbounded"/>
+    				<xs:element ref="fin:BorrowingSourceCode" minOccurs="0" maxOccurs="unbounded"/>
+    				<xs:element ref="fin:BudgetaryImpactCode" minOccurs="0" maxOccurs="unbounded"/>
+    				<xs:element ref="fin:CreditCohortYearDate" minOccurs="0" maxOccurs="unbounded"/>
+    				<xs:element ref="fin:CustodialNoncustodialCode" minOccurs="0" maxOccurs="unbounded"/>
+    				<xs:element ref="fin:ExchangeNonexchangeCode" minOccurs="0" maxOccurs="unbounded"/>
+    				<xs:element ref="fin:FederalNonfederalCode" minOccurs="0" maxOccurs="unbounded"/>
+    				<xs:element ref="fin:TradingPartnerAgencyValue" minOccurs="0" maxOccurs="unbounded"/>
+    				<xs:element ref="fin:TradingPartnerMainAccountCodeValue" minOccurs="0" maxOccurs="unbounded"/>
+    				<xs:element ref="fin:PriorYearAdjustmentCode" minOccurs="0" maxOccurs="unbounded"/>
+    				<xs:element ref="fin:ProgramCode" minOccurs="0" maxOccurs="unbounded"/>
+    				<xs:element ref="fin:ProgramReportCategory" minOccurs="0" maxOccurs="unbounded"/>
+    				<xs:element ref="fin:ReimburseableCode" minOccurs="0" maxOccurs="unbounded"/>
+    				<xs:element ref="fin:YearOfBudgetAuthorityCode" minOccurs="0" maxOccurs="unbounded"/>
+    				<xs:element ref="fin:ReductionCode" minOccurs="0" maxOccurs="unbounded"/>   				
+    			</xs:sequence>
+    		</xs:extension>
+    	</xs:complexContent>
+    </xs:complexType>
+    
+	
+	<xs:complexType name="CustodialNoncustodialCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that indicates whether reported amounts are custodial or noncustodial.  Reference: SFFAS #7, OMB Circ. No. A-136</xs:documentation>
+    	</xs:annotation>
+    	<xs:simpleContent>
+    		<xs:extension base="fin:CustodialNoncustodialSimpleCodeType">
+    			<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+    		</xs:extension>
+    	</xs:simpleContent>
+    </xs:complexType>
+    
+    <xs:simpleType name="DebitCreditSimpleCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type indicates whether the balance reported is a debit or credit.  Reference: OMB Circ. No. A-11, OMB Circ. No. A-136, TFM</xs:documentation>
+    	</xs:annotation>
+        <xs:restriction base="xs:token">
+			<xs:enumeration value="D">
+				<xs:annotation>
+					<xs:documentation>Debit</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C">
+				<xs:annotation>
+					<xs:documentation>Credit</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="DebitCreditCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type indicates whether the balance reported is a debit or credit.  Reference: OMB Circ. No. A-11, OMB Circ. No. A-136, TFM</xs:documentation>
+    	</xs:annotation>
+    	<xs:simpleContent>
+    		<xs:extension base="fin:DebitCreditSimpleCodeType">
+    			<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+    		</xs:extension>
+    	</xs:simpleContent>
+    </xs:complexType>
+
+    <xs:simpleType name="ExchangeNonexchangeSimpleCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that indicates whether the revenue, gains or losses balances being reported is exchange (X), nonexchange (T) or (E) exchange revenue with little or no associated costs. Reference: SFFAS #7, TFM</xs:documentation>
+    	</xs:annotation>
+        <xs:restriction base="xs:token">
+			<xs:enumeration value="E">
+				<xs:annotation>
+					<xs:documentation>Exchange without associated costs</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="T">
+				<xs:annotation>
+					<xs:documentation>Nonexchange</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="X">
+				<xs:annotation>
+					<xs:documentation>Exchange</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ExchangeNonexchangeCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that indicates whether the revenue, gains or losses balances being reported is exchange (X), nonexchange (T) or (E) exchange revenue with little or no associated costs. Reference: SFFAS #7, TFM</xs:documentation>
+    	</xs:annotation>
+    	<xs:simpleContent>
+    		<xs:extension base="fin:ExchangeNonexchangeSimpleCodeType">
+    			<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+    		</xs:extension>
+    	</xs:simpleContent>
+    </xs:complexType>
+    <xs:simpleType name="FederalNonfederalSimpleCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that indicates the type of entity involved in transactions with the reporting entity. Reference: SFFAS #7, TFM</xs:documentation>
+    	</xs:annotation>
+        <xs:restriction base="xs:token">
+			<xs:enumeration value="E">
+				<xs:annotation>
+					<xs:documentation>Non Federal Exception</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="F">
+				<xs:annotation>
+					<xs:documentation>Federal</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="G">
+				<xs:annotation>
+					<xs:documentation>General Fund Only</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="N">
+				<xs:annotation>
+					<xs:documentation>Non Federal</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Z">
+				<xs:annotation>
+					<xs:documentation>Non Reciprocating Federal Activity</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="FederalNonfederalCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that indicates the type of entity involved in transactions with the reporting entity. Reference: SFFAS #7, TFM</xs:documentation>
+    	</xs:annotation>
+    	<xs:simpleContent>
+    		<xs:extension base="fin:FederalNonfederalSimpleCodeType">
+    			<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+    		</xs:extension>
+    	</xs:simpleContent>
+    </xs:complexType>
+
+ 	<xs:simpleType name="FinancingAccountSimpleCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that indicates whether the Federal account symbol is a Direct Loan Financing Account, a Guaranteed Loan Financing Account, or is not a financing account as defined by the Federal Credit Reform Act of 1990. Reference: SF 133, P and F</xs:documentation>
+    	</xs:annotation>
+        <xs:restriction base="xs:token">
+			<xs:enumeration value="D">
+				<xs:annotation>
+					<xs:documentation>Direct</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="G">
+				<xs:annotation>
+					<xs:documentation>Guaranteed</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="N">
+				<xs:annotation>
+					<xs:documentation>Nonfinancing</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="FinancingAccountCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that indicates whether the Federal account symbol is a Direct Loan Financing Account, a Guaranteed Loan Financing Account, or is not a financing account as defined by the Federal Credit Reform Act of 1990. Reference: SF 133, P and F</xs:documentation>
+    	</xs:annotation>
+    	<xs:simpleContent>
+    		<xs:extension base="fin:FinancingAccountSimpleCodeType">
+    			<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+    		</xs:extension>
+    	</xs:simpleContent>
+    </xs:complexType>
+    
+     <xs:simpleType name="FundTypeSimpleCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that represents a classification established in law that describes an OMB account's relationship to the Government, and the source of the receipts that the account is provided. Reference: FAST Book</xs:documentation>
+    	</xs:annotation>
+        <xs:restriction base="xs:token">
+			<xs:enumeration value="CF">
+				<xs:annotation>
+					<xs:documentation>Clearing Account (F3500- F3885)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DF">
+				<xs:annotation>
+					<xs:documentation>Deposit Fund (6000- 6999)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EC">
+				<xs:annotation>
+					<xs:documentation>Consolidated Working Fund (3900-3959)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EG">
+				<xs:annotation>
+					<xs:documentation>General Fund (0000-3899)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EM">
+				<xs:annotation>
+					<xs:documentation>Management Fund (3960-3999)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EP">
+				<xs:annotation>
+					<xs:documentation>Public Enterprise Revolving Funds (4000-4499)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ER">
+				<xs:annotation>
+					<xs:documentation>Intragovernmental Revolving Funds (4500-4999)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ES">
+				<xs:annotation>
+					<xs:documentation>Special Fund (5000-5999)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ET">
+				<xs:annotation>
+					<xs:documentation>Trust Non-revolving Fund (8000-8399 and 8500-8999)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GA">
+				<xs:annotation>
+					<xs:documentation>General Fund Authority</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MR">
+				<xs:annotation>
+					<xs:documentation>Miscellaneous Unavailable Receipts (9500-9550)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TR">
+				<xs:annotation>
+					<xs:documentation>Trust Revolving Fund (8400-8499)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UG">
+				<xs:annotation>
+					<xs:documentation>Unavailable General Fund Receipt (0000-3499)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="US">
+				<xs:annotation>
+					<xs:documentation>Unavailable Special Fund Receipt (5000-5999)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UT">
+				<xs:annotation>
+					<xs:documentation>Unavailable Trust Non- Revolving Fund Receipt (8000-8399 and 8500-8999)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="FundTypeCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that represents a classification established in law that describes an OMB account's relationship to the Government, and the source of the receipts that the account is provided. Reference: FAST Book</xs:documentation>
+    	</xs:annotation>
+    	<xs:simpleContent>
+    		<xs:extension base="fin:FundTypeSimpleCodeType">
+    			<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+    		</xs:extension>
+    	</xs:simpleContent>
+    </xs:complexType>
+    
+    <xs:simpleType name="NormalBalanceSimpleCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type representing the normal condition of the balance in an USSGL account (debit or credit). Reference: SF 133, FMS 2108, P and F</xs:documentation>
+    	</xs:annotation>
+        <xs:restriction base="xs:token">
+			<xs:enumeration value="C">
+				<xs:annotation>
+					<xs:documentation>Credit</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="D">
+				<xs:annotation>
+					<xs:documentation>Debit</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="NormalBalanceCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type representing the normal condition of the balance in an USSGL account (debit or credit). Reference: SF 133, FMS 2108, P and F</xs:documentation>
+    	</xs:annotation>
+    	<xs:simpleContent>
+    		<xs:extension base="fin:NormalBalanceSimpleCodeType">
+    			<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+    		</xs:extension>
+    	</xs:simpleContent>
+    </xs:complexType>
+
+    <xs:simpleType name="PriorYearAdjustmentSimpleCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that represents changes to obligated or unobligated balances that occurred in the previous fiscal year but were not recorded in the appropriate TAFS as of October 1 of the current fiscal year. Reference: OMB Circ. No. A-11</xs:documentation>
+    	</xs:annotation>
+        <xs:restriction base="xs:token">
+			<xs:enumeration value="B">
+				<xs:annotation>
+					<xs:documentation>Adjustment to prior-year reporting - backdated in Treasury's central accounting system</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="P">
+				<xs:annotation>
+					<xs:documentation>Adjustment to prior-year reporting - not backdated in Treasury's central accounting system</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="X">
+				<xs:annotation>
+					<xs:documentation>Not an adjustment to prior-year reporting</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="PriorYearAdjustmentCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that represents changes to obligated or unobligated balances that occurred in the previous fiscal year but were not recorded in the appropriate TAFS as of October 1 of the current fiscal year. Reference: OMB Circ. No. A-11</xs:documentation>
+    	</xs:annotation>
+    	<xs:simpleContent>
+    		<xs:extension base="fin:PriorYearAdjustmentSimpleCodeType">
+    			<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+    		</xs:extension>
+    	</xs:simpleContent>
+    </xs:complexType>
+    <xs:simpleType name="ProgramSimpleCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that represents the amount of cost or revenue directly or indirectly traceable to programs. Reference: TFM</xs:documentation>
+    	</xs:annotation>
+        <xs:restriction base="xs:token">
+			<xs:enumeration value="P">
+				<xs:annotation>
+					<xs:documentation>Assigned to programs</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Q">
+				<xs:annotation>
+					<xs:documentation>Not assigned to programs</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ProgramCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that represents the amount of cost or revenue directly or indirectly traceable to programs. Reference: TFM</xs:documentation>
+    	</xs:annotation>
+    	<xs:simpleContent>
+    		<xs:extension base="fin:ProgramSimpleCodeType">
+    			<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+    		</xs:extension>
+    	</xs:simpleContent>
+    </xs:complexType>
+    
+    <xs:simpleType name="ReductionSimpleCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that represents the type of reduction being reported (e.g., Across The Board, Sequestration or Other) in detailed financial information. Reference: OMB Circ. No. A-11</xs:documentation>
+    	</xs:annotation>
+        <xs:restriction base="xs:token">
+			<xs:enumeration value="ATB">
+				<xs:annotation>
+					<xs:documentation>Across the board reduction</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OTR">
+				<xs:annotation>
+					<xs:documentation>Reductions other than ATB and SEQ</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SEQ">
+				<xs:annotation>
+					<xs:documentation>Sequestration</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="XXX">
+				<xs:annotation>
+					<xs:documentation>N.A.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="ReductionCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that represents the type of reduction being reported (e.g., Across The Board, Sequestration or Other) in detailed financial information. Reference: OMB Circ. No. A-11</xs:documentation>
+    	</xs:annotation>
+    	<xs:simpleContent>
+    		<xs:extension base="fin:ReductionSimpleCodeType">
+    			<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+    		</xs:extension>
+    	</xs:simpleContent>
+    </xs:complexType>
+
+    <xs:simpleType name="ReimburseableSimpleCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that represents whether amounts for goods, services, and joint project support are financed by offsetting collections. Reference: OMB Circ. No. A-11</xs:documentation>
+    	</xs:annotation>
+        <xs:restriction base="xs:token">
+			<xs:enumeration value="D">
+				<xs:annotation>
+					<xs:documentation>Direct</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="R">
+				<xs:annotation>
+					<xs:documentation>Reimburseable</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="ReimburseableCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that represents whether amounts for goods, services, and joint project support are financed by offsetting collections. Reference: OMB Circ. No. A-11</xs:documentation>
+    	</xs:annotation>
+    	<xs:simpleContent>
+    		<xs:extension base="fin:ReimburseableSimpleCodeType">
+    			<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+    		</xs:extension>
+    	</xs:simpleContent>
+    </xs:complexType>
+    
+    <xs:simpleType name="ReportingSimpleCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that indicates at the TAS level activity related to non-Federal ownership interest or statutory dedication of specifically identified revenues to designated activities. Reference: SFFAS 27</xs:documentation>
+    	</xs:annotation>
+        <xs:restriction base="xs:token">
+			<xs:enumeration value="E">
+				<xs:annotation>
+					<xs:documentation>Dedicated Collection</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="F">
+				<xs:annotation>
+					<xs:documentation>Fiduciary</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="U">
+				<xs:annotation>
+					<xs:documentation>Undesignated</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="ReportingCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that indicates at the TAS level activity related to non-Federal ownership interest or statutory dedication of specifically identified revenues to designated activities. Reference: SFFAS 27</xs:documentation>
+    	</xs:annotation>
+    	<xs:simpleContent>
+    		<xs:extension base="fin:ReportingSimpleCodeType">
+    			<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+    		</xs:extension>
+    	</xs:simpleContent>
+    </xs:complexType>
+    
+    <xs:simpleType name="TASStatusSimpleCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type representing the budget authority for a Treasury Account Symbol. Reference: SFFAS 27</xs:documentation>
+    	</xs:annotation>
+        <xs:restriction base="xs:token">
+			<xs:enumeration value="U">
+				<xs:annotation>
+					<xs:documentation>Unexpired</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="E">
+				<xs:annotation>
+					<xs:documentation>Expired</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C">
+				<xs:annotation>
+					<xs:documentation>Cancelled</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="TASAttributesType">
+		<xs:annotation>
+			<xs:documentation>A data type representing the components that comprise the Treasury Account Symbol Attributes.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="structures:ObjectType">
+				<xs:sequence>
+					<xs:element ref="fin:FundTypeCode" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element ref="fin:ReportingCode" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element ref="fin:FinancingAccountCode" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element ref="fin:TASStatusCode" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element ref="fin:TASStatusTransitioningCode" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="TASStatusCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type representing the budget authority for a Treasury Account Symbol. Reference: SFFAS 27</xs:documentation>
+    	</xs:annotation>
+    	<xs:simpleContent>
+    		<xs:extension base="fin:TASStatusSimpleCodeType">
+    			<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+    		</xs:extension>
+    	</xs:simpleContent>
+    </xs:complexType>
+
+   <xs:simpleType name="TASStatusTransitioningSimpleCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type representing the transition status of a Treasury Account Symbol. Reference: TFM</xs:documentation>
+    	</xs:annotation>
+        <xs:restriction base="xs:token">
+			<xs:enumeration value="X">
+				<xs:annotation>
+					<xs:documentation>Expiring</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="K">
+				<xs:annotation>
+					<xs:documentation>Cancelling</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="N">
+				<xs:annotation>
+					<xs:documentation>Not Applicable</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="TASStatusTransitioningCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type representing the transition status of a Treasury Account Symbol. Reference: TFM</xs:documentation>
+    	</xs:annotation>
+    	<xs:simpleContent>
+    		<xs:extension base="fin:TASStatusTransitioningSimpleCodeType">
+    			<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+    		</xs:extension>
+    	</xs:simpleContent>
+    </xs:complexType>
+     
+    <xs:complexType name="USSGLAccountAttributesType">
+    	<xs:annotation>
+    		<xs:documentation>A data type representing detail below the 6-digit USSGL account. Agencies capture this information at the transaction level by recording transactions using USSGL 6-digit accounts plus attributes.</xs:documentation>
+    	</xs:annotation>
+    	<xs:complexContent>
+    		<xs:extension base="structures:ObjectType">
+	    		<xs:sequence>
+	    			<xs:element ref="fin:USSGLAttributes" minOccurs="0" maxOccurs="unbounded"/>
+	    			<xs:element ref="fin:BulkFileAttributes" minOccurs="0" maxOccurs="unbounded"/>
+	    			<xs:element ref="fin:TASAttributes" minOccurs="0" maxOccurs="unbounded"/>
+	    		</xs:sequence>
+	    	</xs:extension>
+    	</xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="USSGLAccountType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that represents a USSGL account including an account number and title.</xs:documentation>
+    	</xs:annotation>
+    	<xs:complexContent>
+    		<xs:extension base="structures:ObjectType">
+    			<xs:sequence>
+    				<xs:element ref="fin:USSGLAccountNumber" minOccurs="0" maxOccurs="unbounded"/>
+    				<xs:element ref="fin:USSGLAccountTitle" minOccurs="0" maxOccurs="unbounded"/>
+    			</xs:sequence>
+    		</xs:extension>
+    	</xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="USSGLAttributesType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that represents USSGL attributes within the USSGL.</xs:documentation>
+    	</xs:annotation>
+    	<xs:complexContent>
+    		<xs:extension base="structures:ObjectType">
+    			<xs:sequence>
+    				<xs:element ref="fin:AnticipatedCode" minOccurs="0" maxOccurs="unbounded"/>
+    				<xs:element ref="fin:BudgetaryProprietaryCode" minOccurs="0" maxOccurs="unbounded"/>
+    				<xs:element ref="fin:NormalBalanceCode" minOccurs="0" maxOccurs="unbounded"/>
+    			</xs:sequence>
+    		</xs:extension>
+    	</xs:complexContent>
+    </xs:complexType>
+    
+     <xs:simpleType name="YearOfBudgetAuthoritySimpleCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that identifies whether outlays are from the new budget authority (NEW) or from budget authority carried forward from the prior year (BAL). Reference: OMB Circ. No. A-11</xs:documentation>
+    	</xs:annotation>
+        <xs:restriction base="xs:token">
+			<xs:enumeration value="BAL">
+				<xs:annotation>
+					<xs:documentation>Outlays from balances brought forward</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NEW">
+				<xs:annotation>
+					<xs:documentation>Outlays from new budget authority</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="USSGLType">
+		<xs:annotation>
+			<xs:documentation>A data type representing the structure of the US Standard General Ledger.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="structures:ObjectType">
+				<xs:sequence>
+					<xs:element ref="fin:USSGLAccount" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element ref="fin:USSGLAccountAttributes" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	
+	</xs:complexType>
+	
+	<xs:complexType name="YearOfBudgetAuthorityCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data type that identifies whether outlays are from the new budget authority (NEW) or from budget authority carried forward from the prior year (BAL). Reference: OMB Circ. No. A-11</xs:documentation>
+    	</xs:annotation>
+    	<xs:simpleContent>
+    		<xs:extension base="fin:YearOfBudgetAuthoritySimpleCodeType">
+    			<xs:attributeGroup ref="structures:SimpleObjectAttributeGroup"/>
+    		</xs:extension>
+    	</xs:simpleContent>
+    </xs:complexType>
+    	
+	<xs:element name="AnticipatedCode" nillable="true" type="fin:AnticipatedCodeType">
+		<xs:annotation>
+			<xs:documentation>A data concept indicating that the transaction is expected or anticipated to occur in the current fiscal year. Reference: USSGL</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:element name="ApportionmentCategoryBProgramValue" nillable="true" type="niem-xs:nonNegativeInteger">
+		<xs:annotation>
+			<xs:documentation>A data concept representing the category A/B and B program used on the SF 132 apportionment schedule. Apportionment Category B Program Code is a four digit number that represents a line on the apportionment schedule. The category B program code is required if the apportionment category is A/B or B. Category B programs are subject to the Anti-Deficiency Act. Reference: OMB Circ. No. A-11</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:element name="ApportionmentCategoryCode" nillable="true" type="fin:ApportionmentCategoryCodeType">
+		<xs:annotation>
+			<xs:documentation>A data concept that ￼identifies OMB apportionments by quarters (Category A) or by other specified time periods, programs, activities, projects, objects, or combinations of these (Category B), or are not subject to apportionment (Category E). Reference: OMB Circ. No. A-11</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	
+	<xs:element name="AuthorityCode" nillable="true" type="fin:AuthorityCodeType">
+		<xs:annotation>
+			<xs:documentation>A data concept that distinguishes among the types of budgetary resources, where it is not possible to do so by the USSGL Account Number Code. Reference: OMB Circ. No. A-11, TFM 2-4200</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	
+	<xs:element name="AvailabilityTimeCode" nillable="true" type="fin:AvailabilityTimeCodeType">
+		<xs:annotation>
+			<xs:documentation>A data concept that indicates whether a budgetary resource is available for new obligations in the current period, or in a subsequent period within the current fiscal year or after being reapportioned in a future fiscal year. Reference: OMB Circ. No. A-11</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	
+	<xs:element name="BEACategoryCode" nillable="true" type="fin:BEACategoryCodeType">
+		<xs:annotation>
+			<xs:documentation>A data concept that indicates whether the Budget Enforcement Act (BEA) category is mandatory or discretionary. Reference: OMB Circ. No. A-11</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:element name="BeginEndCode" nillable="true" type="fin:BeginEndCodeType">
+		<xs:annotation>
+			<xs:documentation>A data concept that indicates whether the balance or an USSGL account/attribute combination is at the start of the fiscal year or at the end of a period. Reference: TFM</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	
+	<xs:element name="BorrowingSourceCode" nillable="true" type="fin:BorrowingSouceCodeType">
+		<xs:annotation>
+			<xs:documentation>A data concept that indicates whether borrowing took place from the public, Treasury, or a Federal financing bank. Reference: TFM, OMB Circ. No. A-11</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	
+	<xs:element name="BudgetaryImpactCode" nillable="true" type="fin:BudgetaryImpactCodeType">
+		<xs:annotation>
+			<xs:documentation>A data concept that indicates whether financing resources and non-exchange revenue have an impact on the budget. Reference: TFM</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	
+	<xs:element name="BudgetaryProprietaryCode" nillable="true" type="fin:BudgetaryProprietaryCodeType">
+	    <xs:annotation>
+    		<xs:documentation>A data concept that indicates if a USSGL account is reported on a budgetary, proprietary statement or both.  Reference: OMB Circ. No. A-11, OMB Circ. No. A-136, TFM</xs:documentation>
+    	</xs:annotation>
+	</xs:element>
+	
+    <xs:element name="BulkFileAttributes" nillable="true" type="fin:USSGLAccountAttributesType">
+    	<xs:annotation>
+    		<xs:documentation>A data concept representing detail below the 6-digit USSGL account. Agencies capture this information at the transaction level by recording transactions using USSGL 6-digit accounts plus attributes.</xs:documentation>
+    	</xs:annotation>    
+    </xs:element>
+
+    <xs:element name="CreditCohortYearDate" nillable="true" type="niem-xs:gYear">
+    	<xs:annotation>
+    		<xs:documentation>A data concept representing fiscal year when direct loans are obligated or guarantees committed by a program, even if disbursements occur in subsequent fiscal years. Reference: OMB Circ. No. A-11</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+    <xs:element name="CustodialNoncustodialCode" nillable="true" type="fin:CustodialNoncustodialCodeType">
+        <xs:annotation>
+    		<xs:documentation>A data concept that indicates whether reported amounts are custodial or noncustodial.  Reference: SFFAS #7, OMB Circ. No. A-136</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+    <xs:element name="DebitCreditCode" nillable="true" type="fin:DebitCreditCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data concept indicates whether the balance reported is a debit or credit.  Reference: OMB Circ. No. A-11, OMB Circ. No. A-136, TFM</xs:documentation>
+    	</xs:annotation>
+    </xs:element>    
+    
+    <xs:element name="ExchangeNonexchangeCode" nillable="true" type="fin:ExchangeNonexchangeCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data concept that indicates whether the revenue, gains or losses balances being reported is exchange (X), nonexchange (T) or (E) exchange revenue with little or no associated costs. Reference: SFFAS #7, TFM</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+    <xs:element name="FederalNonfederalCode" nillable="true" type="fin:FederalNonfederalCodeType">
+        <xs:annotation>
+    		<xs:documentation>A data element that indicates the type of entity involved in transactions with the reporting entity. Reference: SFFAS #7, TFM</xs:documentation>
+    	</xs:annotation>
+    </xs:element>    
+    
+    <xs:element name="FinancingAccountCode" nillable="true" type="fin:FinancingAccountCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data concept that indicates whether the Federal account symbol is a Direct Loan Financing Account, a Guaranteed Loan Financing Account, or is not a financing account as defined by the Federal Credit Reform Act of 1990. Reference: SF 133, P and F</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+    <xs:element name="FundTypeCode" nillable="true" type="fin:FundTypeCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data concept that represents a classification established in law that describes an OMB account's relationship to the Government, and the source of the receipts that the account is provided. Reference: FAST Book</xs:documentation>
+    	</xs:annotation>    
+    </xs:element>
+    
+    <xs:element name="NormalBalanceCode" nillable="true" type="fin:NormalBalanceCodeType">
+        <xs:annotation>
+    		<xs:documentation>A data concept representing the normal condition of the balance in an USSGL account (debit or credit). Reference: SF 133, FMS 2108, P and F</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+    <xs:element name="PriorYearAdjustmentCode" nillable="true" type="fin:PriorYearAdjustmentCodeType">
+       <xs:annotation>
+    		<xs:documentation>A data concept that represents changes to obligated or unobligated balances that occurred in the previous fiscal year but were not recorded in the appropriate TAFS as of October 1 of the current fiscal year. Reference: OMB Circ. No. A-11</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+    <xs:element name="ProgramCode" nillable="true" type="fin:ProgramCodeType">
+        <xs:annotation>
+    		<xs:documentation>A data concept that represents the amount of cost or revenue directly or indirectly traceable to programs. Reference: TFM</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+    <xs:element name="ProgramReportCategory" nillable="true" type="nc:TextType">
+    	<xs:annotation>
+    		<xs:documentation>A data concept that identifies a program report category that agencies use when reporting their obligations in their detailed financial information. Agencies may use this code when reporting either Category A or Category B obligations. Unlike the Apportionment Category B Program, this code is NOT subject to the Anti-Deficiency Act. Reference: OMB Circ. No. A-11</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+    <xs:element name="ReductionCode" nillable="true" type="fin:ReductionCodeType">
+    	<xs:annotation>
+    		<xs:documentation>A data concept that represents the type of reduction being reported (e.g., Across The Board, Sequestration or Other) in detailed financial information. Reference: OMB Circ. No. A-11</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+    <xs:element name="ReimburseableCode" nillable="true" type="fin:ReimburseableCodeType">
+        <xs:annotation>
+    		<xs:documentation>A data concept that represents whether amounts for goods, services, and joint project support are financed by offsetting collections. Reference: OMB Circ. No. A-11</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+    <xs:element name="ReportingCode" nillable="true" type="fin:ReportingCodeType">
+        <xs:annotation>
+    		<xs:documentation>A data concept that indicates at the TAS level activity related to non-Federal ownership interest or statutory dedication of specifically identified revenues to designated activities. Reference: SFFAS 27</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+    <xs:element name="TASAttributes" nillable="true" type="fin:TASAttributesType">
+    	<xs:annotation>
+    		<xs:documentation>A data concept representing the components that comprise the Treasury Account Symbol Attributes.</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+    <xs:element name="TASStatusCode" nillable="true" type="fin:TASStatusCodeType">
+        <xs:annotation>
+    		<xs:documentation>A data concept representing the budget authority for a Treasury Account Symbol. Reference: SFFAS 27</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+    <xs:element name="TASStatusTransitioningCode" nillable="true" type="fin:TASStatusTransitioningCodeType">
+        <xs:annotation>
+    		<xs:documentation>A data concept representing the transition status of a Treasury Account Symbol. Reference: TFM</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+    <xs:element name="TradingPartnerAgencyValue" nillable="true" type="niem-xs:nonNegativeInteger">
+    	<xs:annotation>
+    		<xs:documentation>A data concept that represents the agency identifier of the other department, agency, or establishment of the U. S. government involved in transactions with the reporting entity. Reference: FAST Book</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+    <xs:element name="TradingPartnerMainAccountCodeValue" nillable="true" type="niem-xs:nonNegativeInteger">
+    	<xs:annotation>
+    		<xs:documentation>A data concept that represents the treasury main account code of the other department, agency, or establishment of the U. S. Government involved in transactions with the reporting entity. Reference: FAST Book</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+    <xs:element name="USSGL" nillable="true" type="fin:USSGLType">
+    	<xs:annotation>
+    		<xs:documentation>A data concept representing the US Standard General Ledger.</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+    <xs:element name="USSGLAccount" nillable="true" type="fin:USSGLAccountType">
+    	<xs:annotation>
+    		<xs:documentation>A data concept that represents a USSGL account including an account number and title.</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+        <xs:element name="USSGLAccountAttributes" nillable="true" type="fin:USSGLAccountAttributesType">
+    	<xs:annotation>
+    		<xs:documentation>A data concept that represents USSGL account attributes.</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+    <xs:element name="USSGLAccountNumber" nillable="true" type="niem-xs:nonNegativeInteger">
+		<xs:annotation>
+			<xs:documentation>A data concept representing a US Government Standard General Ledger (USSGL) account number.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	
+	<xs:element name="USSGLAccountTitle" nillable="true" type="nc:TextType">
+		<xs:annotation>
+			<xs:documentation>A data concept representing a title for a US Government Standard General Ledger (USSGL) account number.</xs:documentation>
+		</xs:annotation>	
+	</xs:element>
+    
+    <xs:element name="USSGLAttributes" nillable="true" type="fin:USSGLAttributesType">
+    	<xs:annotation>
+    		<xs:documentation>A data concept that represents USSGL attributes within the USSGL.</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+    <xs:element name="YearOfBudgetAuthorityCode" nillable="true" type="fin:YearOfBudgetAuthorityCodeType">
+        <xs:annotation>
+    		<xs:documentation>A data concept that identifies whether outlays are from the new budget authority (NEW) or from budget authority carried forward from the prior year (BAL). Reference: OMB Circ. No. A-11</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+</xs:schema>
+
