@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema targetNamespace="http://release.niem.gov/niem/finance/3.0/" version="1"
-		   xmlns:ct="http://release.niem.gov/niem/conformanceTargets/3.0/"
 		   xmlns:term="http://release.niem.gov/niem/localTerminology/3.0/" 
 		   xmlns:structures="http://release.niem.gov/niem/structures/3.0/" 
 		   xmlns:nc="http://release.niem.gov/niem/niem-core/3.0/" 
 		   xmlns:niem-xs="http://release.niem.gov/niem/proxy/xsd/3.0/"
 		   xmlns:fin="http://release.niem.gov/niem/finance/3.0/"
 		   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		   xmlns:ct="http://release.niem.gov/niem/conformanceTargets/3.0/"
 		   ct:conformanceTargets="http://reference.niem.gov/niem/specification/naming-and-design-rules/3.0/#ExtensionSchemaDocument">
 	<xs:annotation>
 		<xs:documentation>Defines NIEM adapter types for external financial components defined by the Department of the Treasury and Office of Management and Budget in support of the DATA Act.  It references local copies of unmodified schemas from external standards in local directory tree fragments that mirror the directory structures of the canonical schema sources on the world wide web.</xs:documentation>
@@ -881,6 +881,20 @@
     	</xs:simpleContent>
     </xs:complexType>
      
+    <xs:complexType name="TASType">
+    	<xs:annotation>
+    		<xs:documentation>A data type representing a Treasury Account Symbol. Federal agencies are required to use the TAS when reporting cash transactions to the US government.</xs:documentation>
+    	</xs:annotation>
+    	<xs:complexContent>
+    		<xs:extension base="structures:ObjectType">
+    			<xs:sequence>
+    				<xs:element ref="fin:AgencyID" minOccurs="1" maxOccurs="1"/>
+    				<xs:element ref="fin:MainAccountCode" minOccurs="1" maxOccurs="1"/>
+    			</xs:sequence>
+    		</xs:extension>
+    	</xs:complexContent>
+    </xs:complexType> 
+     
     <xs:complexType name="USSGLAccountAttributesType">
     	<xs:annotation>
     		<xs:documentation>A data type representing detail below the 6-digit USSGL account. Agencies capture this information at the transaction level by recording transactions using USSGL 6-digit accounts plus attributes.</xs:documentation>
@@ -968,7 +982,13 @@
     		</xs:extension>
     	</xs:simpleContent>
     </xs:complexType>
-    	
+    
+    <xs:element name="AgencyID" nillable="true" type="niem-xs:string">
+    	<xs:annotation>
+    		<xs:documentation>A data concept that identifies an agency or organization. Reference: FAST</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
 	<xs:element name="AnticipatedCode" nillable="true" type="fin:AnticipatedCodeType">
 		<xs:annotation>
 			<xs:documentation>A data concept indicating that the transaction is expected or anticipated to occur in the current fiscal year. Reference: USSGL</xs:documentation>
@@ -1077,9 +1097,45 @@
     	</xs:annotation>    
     </xs:element>
     
+    <xs:element name="LegalBusiness" nillable="true" type="nc:OrganizationType">
+    	<xs:annotation>
+    		<xs:documentation>A data concept representing a legal business.</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+        
+    <xs:element name="MainAccountCode" nillable="true" type="niem-xs:string">
+    	<xs:annotation>
+    		<xs:documentation>A data concept that identifies a main account code.</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
     <xs:element name="NormalBalanceCode" nillable="true" type="fin:NormalBalanceCodeType">
         <xs:annotation>
     		<xs:documentation>A data concept representing the normal condition of the balance in an USSGL account (debit or credit). Reference: SF 133, FMS 2108, P and F</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+    <xs:element name="PeriodOfPerformanceCurrentEndDate" nillable="true" type="niem-xs:date">
+        <xs:annotation>
+    		<xs:documentation>A data concept that represents the current end date for the period of performance of a grant or contract.</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+   	<xs:element name="PeriodOfPerformancePotentialEndDate" nillable="true" type="niem-xs:date">
+        <xs:annotation>
+    		<xs:documentation>A data concept that represents the potential end date for the period of performance of a grant or contract.</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+    <xs:element name="PeriodOfPerformanceStartDate" nillable="true" type="niem-xs:date">
+    	<xs:annotation>
+    		<xs:documentation>A data concept that represents the start date for the period of performance of a grant or contract.</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+    <xs:element name="PlaceOfPerformance" nillable="true" type="nc:AddressType">
+    	<xs:annotation>
+    		<xs:documentation>A data concept that represents the location where contractual work is to be performed.</xs:documentation>
     	</xs:annotation>
     </xs:element>
     
@@ -1116,6 +1172,12 @@
     <xs:element name="ReportingCode" nillable="true" type="fin:ReportingCodeType">
         <xs:annotation>
     		<xs:documentation>A data concept that indicates at the TAS level activity related to non-Federal ownership interest or statutory dedication of specifically identified revenues to designated activities. Reference: SFFAS 27</xs:documentation>
+    	</xs:annotation>
+    </xs:element>
+    
+    <xs:element name="TAS" nillable="true" type="fin:TASType">
+    	<xs:annotation>
+    		<xs:documentation>A data concpet representing a Treasury Account Symbol. Federal agencies are required to use the TAS when reporting cash transactions to the US government.</xs:documentation>
     	</xs:annotation>
     </xs:element>
     

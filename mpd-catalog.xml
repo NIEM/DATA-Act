@@ -27,7 +27,7 @@
             <nc:DescriptionText>
                 An IEP class for a timestamped exchange.
             </nc:DescriptionText>
-            <c:HasDocumentElement c:qualifiedNameList="fin:USSGL"/>
+            <c:HasDocumentElement c:qualifiedNameList="fin:USSGL fin:PlaceOfPerformance fin:TAS fin:PeriodOfPerformanceStartDate fin:PeriodOfPerformanceCurrentEndDate fin:PeriodOfPerformancePotentialEndDate fin:LegalBusiness"/>
             <c:XMLSchemaValid>
                 <c:XMLCatalog c:pathURI="xsd/xml-catalog.xml"/>
             </c:XMLSchemaValid>
