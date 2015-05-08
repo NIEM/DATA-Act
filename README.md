@@ -8,5 +8,11 @@ This is a work in progress and includes the United States Standard General Ledge
 
 Schema currently includes the following DATA Act identified elements:
 
+fin:LegalBusiness
+fin:PeriodOfPerformanceStartDate
+fin:PeriodOfPerformanceCurrentEndDate
+fin:PeriodOfPerformancePotentialEndDate
+fin:PlaceOfPerformance
+fin:TAS
 fin:USSGL
 
