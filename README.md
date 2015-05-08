@@ -7,12 +7,11 @@ This is a work in progress and includes the United States Standard General Ledge
 - http://tfm.fiscal.treasury.gov/v1/supplements/ussgl/ussgl_part_2/sec4/sec4_combined_2015.pdf
 
 Schema currently includes the following DATA Act identified elements:
-
-fin:LegalBusiness
-fin:PeriodOfPerformanceStartDate
-fin:PeriodOfPerformanceCurrentEndDate
-fin:PeriodOfPerformancePotentialEndDate
-fin:PlaceOfPerformance
-fin:TAS
-fin:USSGL
+- fin:LegalBusiness
+- fin:PeriodOfPerformanceStartDate
+- fin:PeriodOfPerformanceCurrentEndDate
+- fin:PeriodOfPerformancePotentialEndDate
+- fin:PlaceOfPerformance
+- fin:TAS
+- fin:USSGL
 
